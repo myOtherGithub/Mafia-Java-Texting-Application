@@ -16,6 +16,7 @@ class Player {
 
     boolean living;
     int votevalue;
+    boolean voted;
     String name;
     String email;
     boolean werewolf;
@@ -72,6 +73,7 @@ class Player {
         werewolf = false;
         oracle = false;
         computer = AI;
+        voted = false;
     }
 
     Player(String playerName) {
@@ -82,6 +84,7 @@ class Player {
         werewolf = false;
         oracle = false;
         computer = true;
+        voted = false;
     }
 
     void addvote() {
@@ -98,7 +101,8 @@ class Player {
     // WEREWOLF FUNCTION
     //////////////////////////////////////////
     
-    void werewolf(ArrayList<Player> victimarray) {
+    int werewolfaction(ArrayList<Player> victimarray) {
+        int deadornot = -2;
         boolean VictimChoiceIncomplete = true;
         if (werewolf && !computer) { //If the player is a human
             Scanner keyboard = new Scanner(System.in);
@@ -109,8 +113,14 @@ class Player {
                     if (victim.equals(victimarray.get(j).name) && victimarray.get(j).living) {
                         victimarray.get(j).Kill();
                         VictimChoiceIncomplete = false;
+                        deadornot = 1;
                     } else if (victim.equals(victimarray.get(j).name) && !victimarray.get(j).living) {
                         System.out.println("You cannot kill the dead");
+                        
+                    }
+                    else if(victim.equals("no one")){
+                        deadornot =-2;
+                        System.out.println("You have decided not to kill anyone.");
                     }
                 }
             }
@@ -118,23 +128,25 @@ class Player {
 
             Random thisrandom = new Random();
             int victim = thisrandom.nextInt(victimarray.size());
-            while (!victimarray.get(victim).living) {
-                victim = thisrandom.nextInt(victimarray.size());
+            while (!victimarray.get(victim).living) { //while victim isnt living
+                victim = thisrandom.nextInt(victimarray.size()); //go to the next random and set them as random
             }
-            victimarray.get(victim).addvote();
-            System.out.println(victimarray.get(victim).name + " bit and killed " + victimarray.get(victim).name);
+            victimarray.get(victim).Kill();
+            System.out.println(victimarray.get(victim).name + " was found dead with bite and claw marks" );
+            deadornot = 1;
 
         } else {//If they're not even a werewolf?!
         }
+        return deadornot;
     }
 
     ///////////////////////////////////////////
     // ORACLE FUNCTION
     //////////////////////////////////////////
     
-    void oracle(ArrayList<Player> victimarray) {
+    void oracleaction(ArrayList<Player> victimarray) {
         boolean VictimChoiceIncomplete = true;
-        if (oracle && !computer) { //If the player is a human
+        if (oracle && !computer && living) { //If the player is a living human
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Use your powers to look at someone and see if they are the werewolf or not!");
             while (VictimChoiceIncomplete) {
@@ -154,8 +166,8 @@ class Player {
                     }
                 }
             }
-        } else if (oracle && computer) { //If the player is a random player
-        } else {//If they're not even a werewolf?!
+        }if (oracle && computer) { //If the player is a random player
+        } else {//If they're not even an oracle?!
         }
     }
 }

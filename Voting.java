@@ -17,7 +17,7 @@ class Voting {
     boolean votingincomplete = true;
     
   for(int i = 0;i < myarray.size(); i++){
-      if(myarray.get(i).living && myarray.get(i).computer){
+      if(myarray.get(i).living && myarray.get(i).computer){ //person is living and a computer
                     
                     Random thisrandom = new Random();
                     int votedfor = thisrandom.nextInt(myarray.size());
@@ -28,7 +28,7 @@ class Voting {
                      System.out.println(myarray.get(i).name + " voted for " + myarray.get(votedfor).name);
                 
           }
-      else if(myarray.get(i).living && !myarray.get(i).computer){
+      if(myarray.get(i).living && !myarray.get(i).computer){ //living and not a computer
           while(votingincomplete){
           String vote = keyboard.nextLine();
             for(int j=0; j< myarray.size(); j++){
@@ -41,17 +41,24 @@ class Voting {
                 else if(vote.equals(myarray.get(j).name) && !myarray.get(j).living){
                     System.out.println("You voted for a dead guy");
                 }
+                else if(vote.equals("No one")){
+                    votingincomplete = false;
+                }
                 
                 
                 
             }
           }
       }
+      else{
+          
+      }
   }  
     
 } //end of main constructor
  
 
+ //calculates the totals of everyone in the game
 int CalculateTotal(ArrayList <Player> myarray){
     int highest = 0;
     int highestindex = -2;
@@ -70,8 +77,8 @@ int CalculateTotal(ArrayList <Player> myarray){
   }
 
 
-
-void CompleteVoting(ArrayList <Player> myarray){
+//finishes the voting and determines the winner
+int CompleteVoting(ArrayList <Player> myarray){
     voting(myarray);
     int winner = CalculateTotal(myarray);
     if(winner == -1){
@@ -83,9 +90,12 @@ void CompleteVoting(ArrayList <Player> myarray){
         myarray.get(winner).Kill();
         WipeVotes(myarray);
     }
+     return winner;
     
 }
 
+
+//wipes the votes at the end
 void WipeVotes(ArrayList <Player> myarray){
     for(int i=0; i<myarray.size(); i++){
         myarray.get(i).votevalue = 0;

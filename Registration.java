@@ -4,6 +4,7 @@
  */
 package werewolfgamenontexting;
 
+import java.lang.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -68,4 +69,17 @@ class Registration {
 
 
     }
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
