@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+
 class Voting {
-  
+ReturnNewestMessage cake = new ReturnNewestMessage();
+
+
  void voting(ArrayList <Player> myarray){
   Scanner keyboard = new Scanner(System.in);
     //String command = keyboard.nextLine();
+  ArrayList<MessageTracker> messages;
     String ender = "end";
     boolean votingincomplete = true;
     
@@ -29,7 +33,9 @@ class Voting {
                 
           }
       if(myarray.get(i).living && !myarray.get(i).computer){ //living and not a computer
+          
           while(votingincomplete){
+          
           String vote = keyboard.nextLine();
             for(int j=0; j< myarray.size(); j++){
                 

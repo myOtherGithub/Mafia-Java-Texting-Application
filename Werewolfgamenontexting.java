@@ -13,10 +13,14 @@ public class Werewolfgamenontexting {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
         ArrayList<Player> myarray = new ArrayList();
         Registration initialize = new Registration();
         initialize.register(myarray);
-        
+        ReturnNewestMessage cake = new ReturnNewestMessage();
+        ArrayList<MessageTracker> messages = cake.returnmessage2(myarray);
+        //SendMessage sender = new SendMessage();
+        //sender.sendMessage("hello");
    //     RecieveResponses- = new RecieveResponses();
         
 
