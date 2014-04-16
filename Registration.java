@@ -19,7 +19,7 @@ class Registration {
         Scanner keyboard = new Scanner(System.in);
         String command = keyboard.nextLine();
         String ender = "end";
-
+        SendMessage sender = new SendMessage();
         while (!"end".equals(command)) {
 
             boolean aion;
@@ -64,8 +64,15 @@ class Registration {
 
         myarray.get(random1).bestowOracle();
         myarray.get(therandom).bite();
-        System.out.println(myarray.get(random1).name);
-        System.out.println(myarray.get(therandom).name);
+        if(!myarray.get(random1).computer){
+        sender.sendMessage(myarray.get(random1).email, "You have been bestowed Psychic powers, congratulations Seer.");
+        }
+        if(!myarray.get(therandom).computer){
+        sender.sendMessage(myarray.get(random1).email, "You are the werewolf of the village.");
+        }
+        
+        System.out.println(myarray.get(random1).name + "is the seer");
+        System.out.println(myarray.get(therandom).name + "is the werewolf");
 
 
     }

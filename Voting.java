@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 class Voting {
-ReturnNewestMessage cake = new ReturnNewestMessage();
+ReturnNewestMessage eturner = new ReturnNewestMessage();
 
 
  void voting(ArrayList <Player> myarray){
@@ -20,9 +20,15 @@ ReturnNewestMessage cake = new ReturnNewestMessage();
     String ender = "end";
     boolean votingincomplete = true;
     
-  for(int i = 0;i < myarray.size(); i++){
-      if(myarray.get(i).living && myarray.get(i).computer){ //person is living and a computer
-                    
+    for(Player voteplayer : myarray){
+        if(!voteplayer.living){
+          voteplayer.voted= true;
+      }
+    }
+    
+    for(int i=0; i<myarray.size(); i++){
+        if(myarray.get(i).living && myarray.get(i).computer){ //person is living and a computer
+                    myarray.get(i).voted = true;
                     Random thisrandom = new Random();
                     int votedfor = thisrandom.nextInt(myarray.size());
                     while(!myarray.get(votedfor).living){
@@ -32,33 +38,15 @@ ReturnNewestMessage cake = new ReturnNewestMessage();
                      System.out.println(myarray.get(i).name + " voted for " + myarray.get(votedfor).name);
                 
           }
-      if(myarray.get(i).living && !myarray.get(i).computer){ //living and not a computer
-          
-          while(votingincomplete){
-          
-          String vote = keyboard.nextLine();
-            for(int j=0; j< myarray.size(); j++){
-                
-                
-                if(vote.equals(myarray.get(j).name) && myarray.get(j).living){
-                   myarray.get(j).addvote();
-                   votingincomplete = false;
-                }
-                else if(vote.equals(myarray.get(j).name) && !myarray.get(j).living){
-                    System.out.println("You voted for a dead guy");
-                }
-                else if(vote.equals("No one")){
-                    votingincomplete = false;
-                }
-                
-                
-                
-            }
-          }
-      }
-      else{
-          
-      }
+    }
+    
+  for(int j = 0;j < myarray.size(); j++){
+      if(myarray.get(j).living && !myarray.get(j).computer && !myarray.get(j).voted){ //living and not a computer
+          while(votingincomplete){  
+            GetAllVotes(myarray);
+            votingincomplete = EverybodyVoted(myarray);
+        }    
+    }
   }  
     
 } //end of main constructor
@@ -85,14 +73,17 @@ int CalculateTotal(ArrayList <Player> myarray){
 
 //finishes the voting and determines the winner
 int CompleteVoting(ArrayList <Player> myarray){
+    SendMessage thismessage = new SendMessage();
     voting(myarray);
     int winner = CalculateTotal(myarray);
     if(winner == -1){
         //nobody won
-        System.out.println("nobody wins");
+        thismessage.sendAll(myarray, "no one is to be exiled");
+        System.out.println("no one is to be exiled");
         WipeVotes(myarray);
     }else{
-        System.out.println(myarray.get(winner).name + " lost the game");
+        thismessage.sendAll(myarray, myarray.get(winner).name + " was exiled from the village");
+        System.out.println(myarray.get(winner).name + " was exiled from the village");
         myarray.get(winner).Kill();
         WipeVotes(myarray);
     }
@@ -105,10 +96,52 @@ int CompleteVoting(ArrayList <Player> myarray){
 void WipeVotes(ArrayList <Player> myarray){
     for(int i=0; i<myarray.size(); i++){
         myarray.get(i).votevalue = 0;
+        myarray.get(i).voted = false;
     }
 }
 
+void GetAllVotes(ArrayList<Player> myarray){
+            ArrayList<MessageTracker> messages;
+            messages = eturner.returnmessage2(myarray);
+            for(MessageTracker thismessage : messages){
+              
+             for(Player playervoting : myarray){   
+                if(playervoting.name.contains(thismessage.name) && playervoting.living){
+                    if(thismessage.message.startsWith("/vote")){
+                        if(thismessage.message.contains("no one")){
+                                    playervoting.voted = true;
+                        }else{
+                         for(Player thisplayer : myarray){
+                            if((thismessage.message.contains(thisplayer.name)) && thisplayer.living){
+                                  System.out.println(playervoting.name + " voted for " + thisplayer.name);
+                                  thisplayer.addvote();
+                                  playervoting.voted = true;
+                            }
+                         }
+                        }
+                      }
+                   }
+                }       
+         }
+}
 
+
+boolean EverybodyVoted(ArrayList <Player> myarray){
+    int counter1=0;
+   for(Player thisplayer : myarray){
+       if(thisplayer.voted){
+           counter1++;
+       }
+   }
+   
+   if(counter1 == myarray.size()){
+       return false;
+   }
+   else{
+       return true;
+   }
+}
 
 
 }
+

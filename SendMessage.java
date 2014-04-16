@@ -23,7 +23,7 @@ public class SendMessage {
     Session session = Session.getDefaultInstance(properties(),
 			new javax.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication("werewolftextgame@gmail.com","password");
+					return new PasswordAuthentication("werewolftextgame@gmail.com","legateau18");
 				}
 			});
     
@@ -77,7 +77,9 @@ public class SendMessage {
          void sendAll(ArrayList <Player> theseplayers, String messagebody){
                 String masssend ="";
                 for(int i=0; i< theseplayers.size(); i++){
+                    if(!theseplayers.get(i).computer){
                         masssend += theseplayers.get(i).email + " , ";
+                    }
                 }
                 
                 
@@ -105,10 +107,14 @@ public class SendMessage {
          void sendAllLiving(ArrayList <Player> theseplayers, String messagebody){
                 String masssend ="";
                 for(int i=0; i< theseplayers.size(); i++){
-                    if(theseplayers.get(i).living){
+                    if(theseplayers.get(i).living && !theseplayers.get(i).computer){
                          masssend += theseplayers.get(i).email + " , ";
                     }
                 }
+                
+                if (masssend.equals("")){
+                    
+                }else{
                 
                 if(masssend.endsWith(",")){
                      masssend = masssend.substring(0, masssend.length()-1);
@@ -129,6 +135,7 @@ public class SendMessage {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+            }
          }    
 }
         

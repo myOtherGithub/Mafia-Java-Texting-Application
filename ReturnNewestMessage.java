@@ -26,7 +26,7 @@ public class ReturnNewestMessage {
         try {
             Session session = Session.getInstance(props, null);
             Store store = session.getStore();
-            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "password");
+            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "legateau18");
             
             
           //  Folder inbox = store.getFolder("INBOX");
@@ -60,7 +60,7 @@ public class ReturnNewestMessage {
     
   
   public ArrayList<MessageTracker>  returnmessage2(ArrayList<Player> myarray){
-       int sleeptime = 5000;
+       int sleeptime = 10000;
        boolean mytest = true;
        Date firstDate = null;
        String content = null;
@@ -75,7 +75,7 @@ public class ReturnNewestMessage {
         try {
             Session session = Session.getInstance(props, null);
             Store store = session.getStore();
-            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "password");
+            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "legateau18");
             
             
             Folder inbox = store.getFolder("INBOX");
@@ -109,7 +109,9 @@ public class ReturnNewestMessage {
                             if(myarray.get(p).email.equals(in[0].toString())){
                                 for(int q=0; q<=myarray.size(); q++){
                                     if(bp.getContent().toString().contains(myarray.get(q).name)){
-                                        sendmessage.sendMessage(myarray.get(q).email, bp.getContent().toString());
+                                        String thisstring = bp.getContentType().toString();
+                                        thisstring  = thisstring.substring(4);
+                                        sendmessage.sendMessage(myarray.get(q).email, "Msg from" + myarray.get(q).name + ": " + thisstring);
                                     }
                                 }
                             }
@@ -128,7 +130,7 @@ public class ReturnNewestMessage {
                        if(content.startsWith("/vote") || content.startsWith("/bite") || content.startsWith("/seer")){
                            if(sender != null){
                                 returnmessages.add(new MessageTracker(sender, content));
-                         }
+                           }
                        }
                         
                              
@@ -175,7 +177,7 @@ public class ReturnNewestMessage {
         try {
             Session session = Session.getInstance(props, null);
             Store store = session.getStore();
-            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "password");
+            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "legateau18");
             
             
             Folder inbox = store.getFolder("INBOX");
@@ -349,7 +351,7 @@ public class ReturnNewestMessage {
         try {
             Session session = Session.getInstance(props, null);
             Store store = session.getStore();
-            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "password");
+            store.connect("imap.gmail.com", "werewolftextgame@gmail.com", "legateau18");
             
             
             Folder inbox = store.getFolder("INBOX");

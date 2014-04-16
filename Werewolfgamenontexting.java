@@ -13,12 +13,12 @@ public class Werewolfgamenontexting {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        SendMessage sender = new SendMessage();
         ArrayList<Player> myarray = new ArrayList();
         Registration initialize = new Registration();
         initialize.register(myarray);
         ReturnNewestMessage cake = new ReturnNewestMessage();
-        ArrayList<MessageTracker> messages = cake.returnmessage2(myarray);
+        ArrayList<MessageTracker> messages;
         //SendMessage sender = new SendMessage();
         //sender.sendMessage("hello");
    //     RecieveResponses- = new RecieveResponses();
@@ -49,7 +49,22 @@ public class Werewolfgamenontexting {
         while(deathcounter != myarray.size() && win == false){
         if (day) {
             if (twelvehourperiod == 0) {
-                System.out.println("Upon waking up you have found that your beloved mayor has been found dead");
+                
+                String listofplayers="";
+                for(Player thisplayer : myarray){
+                     if(thisplayer.living){
+                        listofplayers += thisplayer.name + " ,";
+                      }
+               }
+        
+                if(listofplayers.endsWith(",")){
+                         listofplayers = listofplayers.substring(0, listofplayers.length()-1);
+                 }
+             
+                sender.sendAll(myarray,"In the square your mayor is clawed to death. Villagers exile the werewolf. Send /vote <name> to vote.");
+                sender.sendAllLiving(myarray, "Here is a list of living players: " + listofplayers);
+                
+                
                 death = newvote.CompleteVoting(myarray);
                 if(death != -2){
                     deathcounter+=1;
@@ -58,7 +73,21 @@ public class Werewolfgamenontexting {
                 twelvehourperiod++;
                 
             } else {
-                System.out.println("The sun has just risen on day "+twelvehourperiod );
+                sender.sendAll(myarray,"The sun has just risen on day "+twelvehourperiod +" Send /vote <name> to vote.");
+                
+                String listofplayers="";
+                for(Player thisplayer : myarray){
+                     if(thisplayer.living){
+                        listofplayers += thisplayer.name + " , ";
+                      }
+               }
+        
+                if(listofplayers.endsWith(",")){
+                         listofplayers = listofplayers.substring(0, listofplayers.length()-1);
+                 }
+             
+                sender.sendAllLiving(myarray, "Here is a list of living players: " + listofplayers);
+                System.out.println("The sun has just risen on day "+twelvehourperiod + " " + listofplayers);
                 death = newvote.CompleteVoting(myarray);
                 if(death != -2){
                     deathcounter+=1;
@@ -99,12 +128,13 @@ public class Werewolfgamenontexting {
             
         } else {
             System.out.println("Under the cover of darkness, the villagers head back to their homes, while the occult rises and gets to work.");
+            sender.sendAll(myarray,"Under the cover of darkness, the villagers head back to their homes, while the occult rises and gets to work.");
             if (oracleindex >= 0) {
-                myarray.get(oracleindex).oracleaction(myarray);
+                myarray.get(oracleindex).oracleaction(myarray, sender, cake);
                 day = true;
             }
             if (wereindex >= 0) {
-                death = myarray.get(wereindex).werewolfaction(myarray);
+                death = myarray.get(wereindex).werewolfaction(myarray, sender, cake);
                 if(death != -2){
                     deathcounter+=1;
                 }
@@ -153,19 +183,7 @@ public class Werewolfgamenontexting {
               }
           }
       }    
-        
-        
-        
-        
-
-
-    }
-    
-    
-    
-    
-    
-    
+  }
     
     
     
@@ -178,7 +196,20 @@ public class Werewolfgamenontexting {
     }
     
     
-    
+    String LivingPlayerList(ArrayList<Player> players){
+        String localstring ="";
+        for(Player thisplayer : players){
+            if(thisplayer.living){
+              localstring += thisplayer.name + " , ";
+            }
+        }
+        
+        if(localstring.endsWith(",")){
+                     localstring = localstring.substring(0, localstring.length()-1);
+        }
+        
+        return localstring;
+    }
     
 }
 
